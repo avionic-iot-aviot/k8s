@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ros-master-svc
+spec:
+  selector:
+    app: ros
+  ports:
+    - name: ros-http
+      protocol: TCP
+      port: 11311
+      targetPort: 11311        
+  type: LoadBalancer
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ros-config
+data:
+  hostname: "ros-master"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ros-master
+  labels:
+    app.kubernetes.io/name: ros-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ros-master
+  template:
+    metadata:
+      labels:
+        app: ros-master
+    spec:
+      containers:
+        - image: ros:kinetic
+          name: ros-master
+          command: ["/opt/ros/kinetic/bin/roscore"]
+          args: ["-v"]
+          ports:
+          - name: ros
+            containerPort: 11311
+          env:
+            - name: ROS_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ros-config
+                  key: hostname
+          
+

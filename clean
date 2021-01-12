@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "Deleting resources"
+
+echo "Deleting Redis cache"
+kubectl delete -f redis.yaml
+
+echo "Deleting Mongo DB"
+kubectl delete -f mongo.yaml
+
+echo "Deleting Janus gatway"
+kubectl delete -f janus.yaml
+
+echo "Deleting WebSocket server"
+kubectl delete -f ws-server.yaml

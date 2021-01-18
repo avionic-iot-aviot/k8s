@@ -1,0 +1,1 @@
+TENANT_ID=agri COM_NAME=ABCD1234 COM_PASSWORD=EFGH5678 ID=1 SUPERNODE_URL=18.188.136.98:7654 envsubst < dnsserverapp-complete.yaml | kubectl apply -f -
